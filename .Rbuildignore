@@ -1,8 +1,0 @@
-^dv.templates\.Rproj$
-^\.Rproj\.user$
-^.*\.Rproj$
-^LICENSE\.md$
-^LICENSE$
-^\.github
-_pkgdown.yml
-workflows.md
