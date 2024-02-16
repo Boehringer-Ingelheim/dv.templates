@@ -1,4 +1,4 @@
-url: https://sorinvoicu.github.io/dv.templates/
+url: https://boehringer-ingelheim.github.io/dv.templates/
 
 template:
   bootstrap: 5
@@ -6,4 +6,4 @@ template:
 navbar:
   right:
     - icon: fa-github
-      href: https://github.com/sorinvoicu/dv.templates
+      href: https://github.com/boehringer-ingelheim/dv.templates
