@@ -1,0 +1,45 @@
+---
+name: Check 📦
+
+on:
+  pull_request:
+    types:
+      - opened
+      - synchronize
+      - reopened
+      - ready_for_review
+    branches:
+      - main
+  push:
+    branches:
+      - main
+  workflow_call:
+
+concurrency:
+  group: check-test-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  check-test:
+    name: ${{ vars.CI_IMAGE }}
+    runs-on: ubuntu-latest
+    container:
+      image: ${{ vars.CI_IMAGE }}
+
+    steps:
+      - name: Checkout project ⬇️
+        uses: actions/checkout@v4
+
+      - name: Check 📦
+        run: |
+          options(crayon.enabled = TRUE)
+          devtools::check(error_on="error", args=c("--no-tests"))
+        shell: Rscript {0}
+
+      - name: Test 🧪
+        if: >
+          !contains(github.event.commits[0].message, '[skip ci-tests]') && github.event.pull_request.draft == false
+        run: |
+          options(crayon.enabled = TRUE)
+          devtools::test()
+        shell: Rscript {0}

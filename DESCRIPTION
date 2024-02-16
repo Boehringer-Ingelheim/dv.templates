@@ -1,0 +1,20 @@
+Package: dv.templates
+Title: What the Package Does 
+Version: 0.0.0.9100
+Authors@R: 
+    person("Sorin", "Voicu", , "first.last@example.com", role = c("aut", "cre"),
+           comment = c(ORCID = "sorinvoicu"))
+Description: What the package does (one paragraph).
+License: MIT + file LICENSE
+Encoding: UTF-8
+Roxygen: list(markdown = TRUE)
+Imports:
+    shiny,
+    stringr
+Suggests:
+    knitr,
+    testthat (>= 2.0),
+    shinytest2
+VignetteBuilder:
+    knitr
+RoxygenNote: 7.3.0
