@@ -1,0 +1,60 @@
+---
+name: Gitleaks 🌧️
+
+on:
+  pull_request:
+    types:
+      - opened
+      - synchronize
+      - reopened
+      - ready_for_review
+    branches:
+      - main
+  push:
+    branches:
+      - main
+  workflow_call:
+    inputs:
+      gitleaks-version:
+        description: Gitleaks executable version.
+        required: false
+        type: string
+        default: "8.18.2"
+
+concurrency:
+  group: gitleaks-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  gitleaks:
+    name: ${{ vars.CI_IMAGE }}
+    runs-on: ubuntu-latest
+    container:
+      image: ${{ vars.CI_IMAGE }}
+
+    steps:
+      - name: Checkout project ⬇️
+        uses: actions/checkout@v4
+
+      - name: Normalize inputs 📐
+        shell: bash
+        run: |
+          gitleaks_version_input="${{ inputs.gitleaks-version }}"
+          echo "GITLEAKS_VERSION=${gitleaks_version_input:-8.18.2}" >> $GITHUB_ENV
+
+      - name: Install gitleaks 💧
+        run: |
+          cd /tmp
+          wget -q \
+            "https://github.com/zricethezav/gitleaks/releases/download/v${GITLEAKS_VERSION}/gitleaks_${GITLEAKS_VERSION}_linux_x64.tar.gz" \
+            -O gitleaks.tar.gz || \
+            (echo "Error downloading gitleaks ${GITLEAKS_VERSION} tarball" && exit 1)
+          tar -xvzf gitleaks.tar.gz || \
+            (echo "Error unarchiving gitleaks ${GITLEAKS_VERSION} tarball" && exit 1)
+          mv gitleaks /usr/bin/. || \
+            (echo "Error moving gitleaks for /usr/bin" && exit 1)
+        shell: bash
+
+      - name: Run gitleaks 🌧️
+        run: gitleaks -v detect --no-git  --source .
+        shell: bash

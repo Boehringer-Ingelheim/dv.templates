@@ -1,0 +1,55 @@
+---
+name: Roxygen 📄
+
+on:
+  pull_request:
+    types:
+      - opened
+      - synchronize
+      - reopened
+      - ready_for_review
+    branches:
+      - main
+  push:
+    branches:
+      - main
+  workflow_call:
+
+concurrency:
+  group: roxygen-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  roxygen:
+    name: ${{ vars.CI_IMAGE }}
+    runs-on: ubuntu-latest
+    container:
+      image: ${{ vars.CI_IMAGE }}
+
+    steps:
+      - name: Checkout project ⬇️
+        uses: actions/checkout@v4
+        with:
+          path: ${{ github.event.repository.name }}
+
+      - name: Generate man pages 📄
+        run: |
+          Rscript -e 'roxygen2::roxygenize()'
+          if [[ -n $(git status -s | grep -E "man|DESCRIPTION") ]]
+          then
+            ROXYGEN_VERSION="$(Rscript -e 'packageVersion("roxygen2")' | awk '{print $NF}')"
+            echo "⚠️ Manuals are not up-to-date with roxygen comments!"
+            echo "Here are the differences:"
+            git diff man/* DESCRIPTION
+            echo -e "\n Please rerun the following command on your workstation and push your changes"
+            echo "--------------------------------------------------------------------"
+            echo "roxygen2::roxygenize('.')"
+            echo "--------------------------------------------------------------------"
+            echo "ℹ️ roxygen2 version that was used in this workflow: $ROXYGEN_VERSION"
+            echo "Please ensure that the 'RoxygenNote' field in the DESCRIPTION file matches this version"
+            exit 1
+          else
+            echo "👍 Manuals are up-to-date with roxygen comments"
+          fi
+        shell: bash
+        working-directory: ${{ github.event.repository.name }}
