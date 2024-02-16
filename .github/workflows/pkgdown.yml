@@ -26,8 +26,8 @@ jobs:
     container:
       image: ${{ vars.CI_IMAGE }}
 
-    permissions:
-      contents: write
+    # permissions:
+    #   contents: write
 
     steps:
       - name: Checkout project ⬇️
