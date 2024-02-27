@@ -2,7 +2,7 @@ Package: dv.templates
 Title: Provides reusable functionality for R and CI/CD 
 Version: 0.0.0.9100
 Authors@R: c(
-    person("Boehringer Ingelheim International GmbH", role = c("cph", "fnd")),
+    person("Boehringer-Ingelheim Pharma GmbH & Co.KG", role = c("cph", "fnd")),
     person("Sorin", "Voicu", , "first.last@example.com", role = c("aut", "cre"))
     )       
 Description: Provides reusable functionality for R and CI/CD.
