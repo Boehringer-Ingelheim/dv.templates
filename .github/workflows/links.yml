@@ -1,0 +1,36 @@
+---
+name: Check URLs 🌐
+
+on:
+  pull_request:
+    types:
+      - opened
+      - synchronize
+      - reopened
+      - ready_for_review
+    branches:
+      - main
+  push:
+    branches:
+      - main
+  workflow_call:
+
+concurrency:
+  group: links-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  links:
+    name: ${{ vars.CI_IMAGE }}
+    runs-on: ubuntu-latest
+    container:
+      image: ${{ vars.CI_IMAGE }}
+
+    steps:
+      - name: Checkout project ⬇️
+        uses: actions/checkout@v4
+
+      - name: Check URLs 🌐
+        uses: lycheeverse/lychee-action@v1
+        with:
+          fail: true
