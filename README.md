@@ -7,6 +7,7 @@
 [![Build status](https://github.com/boehringer-ingelheim/dv.templates/actions/workflows/lintr.yml/badge.svg)](https://github.com/boehringer-ingelheim/dv.templates/actions/workflows/lintr.yml?query=workflow)
 [![Build status](https://github.com/boehringer-ingelheim/dv.templates/actions/workflows/pkgdown.yml/badge.svg)](https://github.com/boehringer-ingelheim/dv.templates/actions/workflows/pkgdown.yml?query=workflow)
 [![Build status](https://github.com/boehringer-ingelheim/dv.templates/actions/workflows/roxygen.yml/badge.svg)](https://github.com/boehringer-ingelheim/dv.templates/actions/workflows/roxygen.yml?query=workflow)
+[![Build status](https://github.com/boehringer-ingelheim/dv.templates/actions/workflows/links.yml/badge.svg)](https://github.com/boehringer-ingelheim/dv.templates/actions/workflows/links.yml?query=workflow)
 
 An R package template with built-in GitHub Actions-based CI/CD workflows.
 
