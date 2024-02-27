@@ -34,6 +34,12 @@ jobs:
         uses: lycheeverse/lychee-action@v1
         with:
           fail: true
-          args: --base . --verbose --no-progress './**/*.md' './**/*.html' './**/*.rst'
+          args: >-
+            --verbose 
+            --no-progress 
+            **/*.md 
+            **/*.Rmd 
+            **/*.html
+            **/*.yml
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
