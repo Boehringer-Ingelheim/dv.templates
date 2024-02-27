@@ -1,6 +1,4 @@
-<img src="inst/repo-logo.svg" align="right" height="138" alt="" />
-
-# dv.templates
+# dv.templates <img src="inst/repo-logo.svg" align="right" height="138" alt="" />
 
 [![Build status](https://github.com/boehringer-ingelheim/dv.templates/actions/workflows/check.yml/badge.svg)](https://github.com/boehringer-ingelheim/dv.templates/actions/workflows/check.yml?query=workflow)
 [![Build status](https://github.com/boehringer-ingelheim/dv.templates/actions/workflows/gitleaks.yml/badge.svg)](https://github.com/boehringer-ingelheim/dv.templates/actions/workflows/gitleaks.yml?query=workflow)
