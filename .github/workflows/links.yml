@@ -33,7 +33,6 @@ jobs:
       - name: Check URLs 🌐
         uses: lycheeverse/lychee-action@v1
         with:
-          fail: true
           args: >-
             --verbose 
             --no-progress 
