@@ -23,7 +23,11 @@ Uses [`roxygen`](https://roxygen2.r-lib.org/) to generate `.Rd` files in the
 
 ### [`links.yml`](https://github.com/boehringer-ingelheim/dv.templates/blob/main/.github/workflows/links.yml)
 
-Checks for broken links inside the repo.
+Checks for broken links inside the repository.
+
+### [`shared_ci.yml`](https://github.com/boehringer-ingelheim/dv.templates/blob/main/.github/workflows/shared_ci.yml)
+
+Builds a reusable workflow to be called from other repositories.
 
 Example configuration for `main` branch:
 
