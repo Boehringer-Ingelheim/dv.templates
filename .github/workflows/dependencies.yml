@@ -34,8 +34,8 @@ jobs:
 
       - name: Install package dependencies 📄
         run: |
-          if (file.exists(${PATH})) {
-              yaml::yaml.load(readLines(${PATH}))$dependencies |>
+          if (file.exists(Sys.getenv("PATH"))) {
+              yaml::yaml.load(readLines(Sys.getenv("PATH")))$dependencies |>
               sapply(function(x) x$repo) |>
               pak::pak(dependencies = TRUE, ask = FALSE, upgrade = FALSE)
             }
