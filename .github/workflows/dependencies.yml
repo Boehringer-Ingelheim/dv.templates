@@ -34,14 +34,14 @@ jobs:
 
       - name: Install package dependencies 📄
         run: |
-          print(Sys.getenv())
-          print(getwd("."))
-          if (file.exists(Sys.getenv("PATH"))) {
-              yaml::yaml.load(readLines(Sys.getenv("PATH")))$dependencies |>
+          args <- commandArgs(trailingOnly = TRUE)
+          path <- args[1]
+          if (file.exists(path)) {
+              yaml::yaml.load(readLines(path))$dependencies |>
               sapply(function(x) x$repo) |>
               pak::pak(dependencies = TRUE, ask = FALSE, upgrade = FALSE)
             }
         shell: Rscript {0}
-        # working-directory: ${{ github.event.repository.name }}
-        env:
+        working-directory: ${{ github.event.repository.name }}
+        with:
           PATH: "dependencies.yml"
