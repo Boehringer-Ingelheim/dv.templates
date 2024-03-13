@@ -30,6 +30,19 @@ jobs:
       - name: Checkout project ⬇️
         uses: actions/checkout@v4
 
+      - name: Install package dependencies 📄
+        run: |
+          if (file.exists("dependencies.yml")) {
+              repos <- yaml::yaml.load(readLines("dependencies.yml"))$dependencies |>
+              sapply(function(x) x$repo) 
+              if(repos |> length() > 0) {
+                repos |>
+                pak::pak(dependencies = TRUE, ask = FALSE, upgrade = FALSE)
+              }
+            }
+        shell: Rscript {0}
+        working-directory: ${{ github.event.repository.name }}        
+
       - name: Check 📦
         run: |
           options(crayon.enabled = TRUE)
