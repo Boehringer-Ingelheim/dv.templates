@@ -39,9 +39,8 @@ jobs:
                 repos |>
                 pak::pak(dependencies = TRUE, ask = FALSE, upgrade = FALSE)
               }
-            }
-        shell: Rscript {0}
-        working-directory: ${{ github.event.repository.name }}        
+          }
+        shell: Rscript {0}    
 
       - name: Check 📦
         run: |
