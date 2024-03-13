@@ -38,7 +38,7 @@ jobs:
 
       - name: Test 🧪
         if: >
-          !contains(github.event.commits[0].message, '[skip ci-tests]') && github.event.pull_request.draft == false
+          !contains(github.event.commits[0].message, '[skip tests]') && github.event.pull_request.draft == false
         run: |
           options(crayon.enabled = TRUE)
           devtools::test()
