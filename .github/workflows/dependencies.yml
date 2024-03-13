@@ -34,7 +34,7 @@ jobs:
 
       - name: Install package dependencies 📄
         run: |
-          print(Sys.getenv("PATH"))
+          print(Sys.getenv())
           print(getwd("."))
           if (file.exists(Sys.getenv("PATH"))) {
               yaml::yaml.load(readLines(Sys.getenv("PATH")))$dependencies |>
