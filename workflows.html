@@ -63,10 +63,6 @@
 <p>Uses <a href="https://roxygen2.r-lib.org/" class="external-link"><code>roxygen</code></a> to generate <code>.Rd</code> files in the <code>man/</code> directory. It also checks if manuals are up-to-date with roxygen comments in the code.</p>
 </div>
 <div class="section level3">
-<h3 id="linksyml"><a href="https://github.com/boehringer-ingelheim/dv.templates/blob/main/.github/workflows/links.yml" class="external-link"><code>links.yml</code></a><a class="anchor" aria-label="anchor" href="#linksyml"></a></h3>
-<p>Checks for broken links inside the repository.</p>
-</div>
-<div class="section level3">
 <h3 id="shared_ciyml"><a href="https://github.com/boehringer-ingelheim/dv.templates/blob/main/.github/workflows/shared_ci.yml" class="external-link"><code>shared_ci.yml</code></a><a class="anchor" aria-label="anchor" href="#shared_ciyml"></a></h3>
 <p>Builds a reusable workflow to be called from other repositories.</p>
 <p>Example configuration for <code>main</code> branch:</p>
@@ -108,11 +104,7 @@
 <span id="cb1-36"><a href="#cb1-36"></a></span>
 <span id="cb1-37"><a href="#cb1-37"></a><span class="at">  </span><span class="fu">pkgdown</span><span class="kw">:</span></span>
 <span id="cb1-38"><a href="#cb1-38"></a><span class="at">    </span><span class="fu">name</span><span class="kw">:</span><span class="at"> Pkgdown 📖</span></span>
-<span id="cb1-39"><a href="#cb1-39"></a><span class="at">    </span><span class="fu">uses</span><span class="kw">:</span><span class="at"> boehringer-ingelheim/dv.templates/.github/workflows/pkgdown.yml@main</span></span>
-<span id="cb1-40"><a href="#cb1-40"></a></span>
-<span id="cb1-41"><a href="#cb1-41"></a><span class="at">  </span><span class="fu">links</span><span class="kw">:</span></span>
-<span id="cb1-42"><a href="#cb1-42"></a><span class="at">    </span><span class="fu">name</span><span class="kw">:</span><span class="at"> Check URLs 🌐</span></span>
-<span id="cb1-43"><a href="#cb1-43"></a><span class="at">    </span><span class="fu">uses</span><span class="kw">:</span><span class="at"> boehringer-ingelheim/dv.templates/.github/workflows/links.yml@main</span></span></code></pre></div>
+<span id="cb1-39"><a href="#cb1-39"></a><span class="at">    </span><span class="fu">uses</span><span class="kw">:</span><span class="at"> boehringer-ingelheim/dv.templates/.github/workflows/pkgdown.yml@main</span></span></code></pre></div>
 </div>
 </div>
 
