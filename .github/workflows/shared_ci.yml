@@ -1,19 +1,14 @@
 ---
-name: Checks 🧩
+name: Pipeline 🛠️
 
 on:
   workflow_call:
 
-jobs:
-  check-test:
-    name: Check 📦
-    uses: boehringer-ingelheim/dv.templates/.github/workflows/check.yml@main
+jobs:  
 
-  lintr:
-    name: Lintr 🔍
-    uses: boehringer-ingelheim/dv.templates/.github/workflows/lintr.yml@main
-    with:
-      lintr_error_on_lint: true
+  single-build:
+    name: Package Building 📦
+    uses: boehringer-ingelheim/dv.templates/.github/workflows/package_building.yml@main
 
   gitleaks:
     name: Gitleaks 🌧️
@@ -22,10 +17,6 @@ jobs:
   roxygen:
     name: Roxygen 📄
     uses: boehringer-ingelheim/dv.templates/.github/workflows/roxygen.yml@main
-
-  pkgdown:
-    name: Pkgdown 📖
-    uses: boehringer-ingelheim/dv.templates/.github/workflows/pkgdown.yml@main
 
   styler:
     name: Styler 🌐

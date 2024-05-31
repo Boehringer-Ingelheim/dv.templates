@@ -48,24 +48,24 @@ on:
 jobs:
   check-test:
     name: Check 📦
-    uses: boehringer-ingelheim/dv.templates/.github/workflows/check.yml@main
+    uses: boehringer-ingelheim/dv.templates/.github/workflows/check.yml@local
 
   lintr:
     name: Lintr 🔍
-    uses: boehringer-ingelheim/dv.templates/.github/workflows/lintr.yml@main
+    uses: boehringer-ingelheim/dv.templates/.github/workflows/lintr.yml@local
     with:
       lintr_error_on_lint: true
 
   gitleaks:
     name: Gitleaks 🌧️
-    uses: boehringer-ingelheim/dv.templates/.github/workflows/gitleaks.yml@main
+    uses: boehringer-ingelheim/dv.templates/.github/workflows/gitleaks.yml@local
 
   roxygen:
     name: Roxygen 📄
-    uses: boehringer-ingelheim/dv.templates/.github/workflows/roxygen.yml@main
+    uses: boehringer-ingelheim/dv.templates/.github/workflows/roxygen.yml@local
 
   pkgdown:
     name: Pkgdown 📖
-    uses: boehringer-ingelheim/dv.templates/.github/workflows/pkgdown.yml@main
+    uses: boehringer-ingelheim/dv.templates/.github/workflows/pkgdown.yml@local
 
 ```

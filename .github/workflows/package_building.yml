@@ -1,5 +1,5 @@
 ---
-name: Pkgdown 📖
+name: Check 📦
 
 on:
   pull_request:
@@ -16,43 +16,52 @@ on:
   workflow_call:
 
 concurrency:
-  group: pkgdown-${{ github.event.pull_request.number || github.ref }}
+  group: check-test-${{ github.event.pull_request.number || github.ref }}
   cancel-in-progress: true
 
 jobs:
-  pkgdown:
+  check-test:
     name: ${{ vars.CI_IMAGE }}
     runs-on: ubuntu-latest
     container:
       image: ${{ vars.CI_IMAGE }}
+    env:
+      GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
 
     steps:
       - name: Checkout project ⬇️
         uses: actions/checkout@v4
 
-      - name: Install package dependencies 📄
-        uses: boehringer-ingelheim/dv.templates/.github/actions/dependencies@main           
+      - name: Checkout Repo Templates      
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          repository: boehringer-ingelheim/dv.templates
+          path: templates
+
+      - name: Single Build 📦        
+        run: Rscript templates/pkg_pipeline/single_build.R
 
       - name: Build site 🔧
         run: pkgdown::build_site()
         shell: Rscript {0}
-
+  
       - name: Check URLs 🌐
         run: |
           lychee . --format markdown --verbose --no-progress >> $GITHUB_STEP_SUMMARY
         shell: bash  
 
-      - name: Checkout gh-pages branch ⬇️
-        if: github.ref_name == 'main'
+      - name: Checkout gh-pages branch ⬇️        
         uses: actions/checkout@v4
         with:
           path: gh-pages
           ref: gh-pages
 
-      - name: Deploy to GitHub pages 📰
-        if: github.ref_name == 'main'
+      - name: Deploy to GitHub pages 📰        
         uses: JamesIves/github-pages-deploy-action@v4.5.0
         with:
           clean: true
           branch: gh-pages
           folder: docs
+
+
