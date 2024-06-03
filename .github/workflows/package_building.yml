@@ -61,7 +61,8 @@ jobs:
           path: gh-pages
           ref: gh-pages
 
-      - name: Deploy to GitHub pages 📰        
+      - name: Deploy to GitHub pages 📰  
+        if: github.ref_name == 'main'      
         uses: JamesIves/github-pages-deploy-action@v4.5.0
         with:
           clean: true
