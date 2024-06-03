@@ -54,7 +54,8 @@ jobs:
           lychee . --format markdown --verbose --no-progress >> $GITHUB_STEP_SUMMARY
         shell: bash  
 
-      - name: Checkout gh-pages branch ⬇️        
+      - name: Checkout gh-pages branch ⬇️
+        if: github.ref_name == 'main' 
         uses: actions/checkout@v4
         with:
           path: gh-pages
