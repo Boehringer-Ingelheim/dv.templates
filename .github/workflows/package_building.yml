@@ -38,6 +38,9 @@ jobs:
           ref: main
           repository: boehringer-ingelheim/dv.templates
           path: templates
+  
+      - name: Install package dependencies 📄
+        uses: boehringer-ingelheim/dv.templates/.github/actions/dependencies@main
 
       - name: Single Build 📦        
         run: Rscript templates/pkg_pipeline/single_build.R

@@ -17,7 +17,6 @@ message("############################")
 message("###### INSTALLING (S) ######")
 message("############################")
 
-pak::local_install_deps(".", upgrade=FALSE, ask=FALSE, dependencies = TRUE)
 devtools::install(upgrade = FALSE, args = "--install-tests")
 
 message("############################")
