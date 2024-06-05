@@ -10,7 +10,7 @@
     
     <a class="navbar-brand me-2" href="index.html">dv.templates</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.0.9100</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.0</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -20,6 +20,9 @@
     <div id="navbar" class="collapse navbar-collapse ms-3">
       <ul class="navbar-nav me-auto"><li class="nav-item">
   <a class="nav-link" href="reference/index.html">Reference</a>
+</li>
+<li class="nav-item">
+  <a class="nav-link" href="news/index.html">Changelog</a>
 </li>
       </ul><form class="form-inline my-2 my-lg-0" role="search">
         <input type="search" class="form-control me-sm-2" aria-label="Toggle navigation" name="search-input" data-search-index="search.json" id="search-input" placeholder="Search for" autocomplete="off"></form>
@@ -65,6 +68,10 @@
 <div class="section level3">
 <h3 id="roxygenyml"><a href="https://github.com/boehringer-ingelheim/dv.templates/blob/main/.github/workflows/roxygen.yml" class="external-link"><code>roxygen.yml</code></a><a class="anchor" aria-label="anchor" href="#roxygenyml"></a></h3>
 <p>Uses <a href="https://roxygen2.r-lib.org/" class="external-link"><code>roxygen</code></a> to generate <code>.Rd</code> files in the <code>man/</code> directory. It also checks if manuals are up-to-date with roxygen comments in the code.</p>
+</div>
+<div class="section level3">
+<h3 id="releaseyml"><a href="https://github.com/boehringer-ingelheim/dv.templates/blob/main/.github/workflows/release.yml" class="external-link"><code>release.yml</code></a><a class="anchor" aria-label="anchor" href="#releaseyml"></a></h3>
+<p>Uses adds additional checks before merging the PR to main.</p>
 </div>
 <div class="section level3">
 <h3 id="shared_ciyml"><a href="https://github.com/boehringer-ingelheim/dv.templates/blob/main/.github/workflows/shared_ci.yml" class="external-link"><code>shared_ci.yml</code></a><a class="anchor" aria-label="anchor" href="#shared_ciyml"></a></h3>
