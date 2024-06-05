@@ -4,7 +4,7 @@
 #' 2. Copy that variable and the contents of if block to tests/testthat/setup.R
 #' (If you are using the template this may already be in place for you)
 
-if(!exists("package_name")) stop("package name must be in the environment when this script is sourced")
+if (!exists("package_name")) stop("package name must be in the environment when this script is sourced")
 
 if (FALSE) {
   # validation (S)
