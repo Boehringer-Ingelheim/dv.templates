@@ -127,9 +127,9 @@ summary <- c(
   summary,
   purrr::imap_chr(success, ~{
     symbol <- "\U02753"
-    symbol <- if (isTRUE(.x)) "\U02705"
-    symbol <- if (isFALSE(.x)) "\U0274C"
-    symbol <- if (is.na(.x)) "\U02757"
+    if (isTRUE(.x)) symbol <- "\U02705"
+    if (isFALSE(.x)) symbol <- "\U0274C"
+    if (is.na(.x)) symbol <- "\U02757"
     paste(" - ", symbol, .y)
   })
 )
