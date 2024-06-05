@@ -2,17 +2,6 @@
 name: Release 📈
 
 on:
-  pull_request:
-    types:
-      - opened
-      - synchronize
-      - reopened
-      - ready_for_review
-    branches:
-      - main
-  push:
-    branches:
-      - main
   workflow_call:
 
 concurrency:
@@ -37,16 +26,16 @@ jobs:
           echo "DESCRIPTION version: $DESC_VERSION"
 
           if [ $DESC_DEV_VERSION -ge 9000 ]; then
-            echo "✖️ DESCRIPTION file version is in development mode."
+            echo "❌ DESCRIPTION file version is in development mode."
             echo "Please fix this."
             exit 1
           fi
 
           if [ "$DESC_VERSION" = "$NEWS_VERSION" ]; then 
-            echo "✔️ NEWS.md and DESCRIPTION have the same version"
+            echo "✅ NEWS.md and DESCRIPTION have the same version"
             exit 0
           else
-            echo "✖️ NEWS.md and DESCRIPTION have different versions"
+            echo "❌ NEWS.md and DESCRIPTION have different versions"
             echo "Please fix this."
             exit 1
           fi
