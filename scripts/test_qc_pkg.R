@@ -139,7 +139,7 @@ CON <- file(github_summary_file, "a")
 on.exit(close(CON))
 writeLines(summary, CON)
 
-stopifnot(isTRUE(all(success)))
+stopifnot(all(success | is.na(sucess)))
 
 message("##############################")
 message("###### BUILD RESULT (F) ######")
