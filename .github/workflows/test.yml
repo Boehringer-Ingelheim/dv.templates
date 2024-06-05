@@ -34,31 +34,41 @@ jobs:
           path: templates
 
       - name: Overwrite quality control scripts with dv.templates ones 🧹
+        shell: bash
         run: |
-          # Paths to the directories
           TEMPLATE_DIR="templates/inst/validation"
           REPO_DIR="inst/validation"
-          
-          # Run the diff command and capture the output
-          DIFF_OUTPUT=$(diff -qr "$TEMPLATE_DIR" "$REPO_DIR")
 
-          echo "# Quality control files" | tee -a $GITHUB_STEP_SUMMARY
-          
-          # Check if the diff command found any differences
-          if [ -n "$DIFF_OUTPUT" ]; then
-            echo "Warning: The contents of the directories are different!" | tee -a $GITHUB_STEP_SUMMARY
-            echo "Modified files:" | tee -a $GITHUB_STEP_SUMMARY
-            echo "$DIFF_OUTPUT" | tee -a $GITHUB_STEP_SUMMARY
-          else
-            echo "The directories are identical." | tee -a $GITHUB_STEP_SUMMARY
+          if test ! -d "${REPO_DIR}"; then
+            echo "### Quality Control documentation is not present"
+            echo "### Include quality control documentation or skip it by creating following file 'inst/validation/skip_qc'"
+            exit 1
           fi
 
-          # Always overwrite
+          if test -f "${REPO_DIR}/skip_qc"; then
+            echo "skip_qc file found skipping qc documentation"
+            exit 0
+          fi
+          
+          # Conserve specs.R file
+          cp "${REPO_DIR}/specs.R" "${TEMPLATE_DIR}/specs.R"
 
-          rm -rf "$REPO_DIR"/*
+          set +e  # Disable immediate exit in conflicting parts on error for diff command
+          DIFF_OUTPUT=$(diff -qr "${TEMPLATE_DIR}" "${REPO_DIR}")
+          set -e  # Enable immediate exit on error after diff command
 
-          # Move contents of REPO_DIR to TEMPLATE_DIR
-          mv "$TEMPLATE_DIR"/* "$REPO_DIR"
+          echo "# Quality control files" | tee -a "${GITHUB_STEP_SUMMARY}"
+          
+          if [ -n "${DIFF_OUTPUT}" ]; then
+            echo "Warning: The contents of the directories are different!" | tee -a "${GITHUB_STEP_SUMMARY}"
+            echo "Modified files:" | tee -a "${GITHUB_STEP_SUMMARY}"
+            echo "$DIFF_OUTPUT" | tee -a "${GITHUB_STEP_SUMMARY}"
+          else
+            echo "The directories are identical." | tee -a "${GITHUB_STEP_SUMMARY}"
+          fi
+
+          rm -rf "${REPO_DIR}"
+          mv "${TEMPLATE_DIR}" "${REPO_DIR}"
 
       - name: Install package dependencies 📄
         uses: boehringer-ingelheim/dv.templates/.github/actions/dependencies@main     
