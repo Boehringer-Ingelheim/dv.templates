@@ -71,6 +71,7 @@ if (!dir.exists(validation_root)) {
 }
 
 if (file.exists(validation_skip)) {
+  writeLines("", file.path(validation_results, "skipped_qc"))
   success[["valdoc"]] <- NA
 } else {
 
