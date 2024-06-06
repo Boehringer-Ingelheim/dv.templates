@@ -86,6 +86,7 @@ title <- paste(result_symbol, params[["package"]], params[["version"]])
 ```
 
 ## `r title`
+Date: `r format(Sys.time(), "%Y-%b-%d %H:%M:%S")`
 
 The following document generates a report for R packages, to satisfy the criteria of a "Released" status under the **Non-GxP** project. The QC report contains the following information:
 
