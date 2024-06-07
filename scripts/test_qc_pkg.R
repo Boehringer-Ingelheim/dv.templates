@@ -71,6 +71,7 @@ if (!dir.exists(validation_root)) {
 }
 
 if (file.exists(validation_skip)) {
+  writeLines("", file.path(validation_results, "skipped_qc"))
   success[["valdoc"]] <- NA
 } else {
 
@@ -127,9 +128,9 @@ summary <- c(
   summary,
   purrr::imap_chr(success, ~{
     symbol <- "\U02753"
-    symbol <- if (isTRUE(.x)) "\U02705"
-    symbol <- if (isFALSE(.x)) "\U0274C"
-    symbol <- if (is.na(.x)) "\U02757"
+    if (isTRUE(.x)) symbol <- "\U02705"
+    if (isFALSE(.x)) symbol <- "\U0274C"
+    if (is.na(.x)) symbol <- "\U02757"
     paste(" - ", symbol, .y)
   })
 )
@@ -138,7 +139,7 @@ CON <- file(github_summary_file, "a")
 on.exit(close(CON))
 writeLines(summary, CON)
 
-stopifnot(isTRUE(all(success)))
+stopifnot(all(success | is.na(sucess)))
 
 message("##############################")
 message("###### BUILD RESULT (F) ######")
