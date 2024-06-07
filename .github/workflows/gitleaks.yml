@@ -16,7 +16,7 @@ concurrency:
 
 jobs:
   gitleaks:
-    name: ${{ vars.CI_IMAGE }}
+    name: Gitleaks 🌧️
     runs-on: ubuntu-latest
     container:
       image: ${{ vars.CI_IMAGE }}

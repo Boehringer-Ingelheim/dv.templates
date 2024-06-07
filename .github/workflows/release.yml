@@ -10,7 +10,7 @@ concurrency:
 
 jobs:
   create-release:
-    name: ${{ vars.CI_IMAGE }}
+    name: Release 📈
     runs-on: ubuntu-latest
 
     steps:

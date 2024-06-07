@@ -10,7 +10,7 @@ concurrency:
 
 jobs:
   check:
-    name: ${{ vars.CI_IMAGE }}
+    name: Check 📦
     runs-on: ubuntu-latest
     container:
       image: ${{ vars.CI_IMAGE }}    

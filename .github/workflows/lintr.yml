@@ -16,7 +16,7 @@ concurrency:
 
 jobs:
   lintr:
-    name: ${{ vars.CI_IMAGE }}
+    name: Lintr 🔍
     runs-on: ubuntu-latest
     container:
       image: ${{ vars.CI_IMAGE }}    
