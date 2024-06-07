@@ -14,7 +14,7 @@ env:
 
 jobs:
   test:
-    name: Test and QC 🧪
+    name: ${{ vars.CI_IMAGE }}
     runs-on: ubuntu-latest
     container:
       image: ${{ vars.CI_IMAGE }}    

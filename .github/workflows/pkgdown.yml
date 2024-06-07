@@ -10,7 +10,7 @@ concurrency:
 
 jobs:
   pkgdown:
-    name: Pkgdown 📖
+    name: ${{ vars.CI_IMAGE }}
     runs-on: ubuntu-latest
     container:
       image: ${{ vars.CI_IMAGE }}    

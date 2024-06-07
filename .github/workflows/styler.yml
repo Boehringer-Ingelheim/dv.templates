@@ -10,7 +10,7 @@ concurrency:
 
 jobs:
   styler:
-    name: Styler 🦄
+    name: ${{ vars.CI_IMAGE }}
     runs-on: ubuntu-latest
     container:
       image: ${{ vars.CI_IMAGE }}    
