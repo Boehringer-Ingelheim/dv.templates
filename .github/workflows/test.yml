@@ -17,7 +17,9 @@ jobs:
     name: ${{ vars.CI_IMAGE }}
     runs-on: ubuntu-latest
     container:
-      image: ${{ vars.CI_IMAGE }}
+      image: ${{ vars.CI_IMAGE }}    
+    env:
+      GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
 
     steps:
       - name: Checkout project ⬇️
