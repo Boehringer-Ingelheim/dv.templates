@@ -8,6 +8,10 @@ concurrency:
   group: pkgdown-${{ github.event.pull_request.number || github.ref }}
   cancel-in-progress: true
 
+env:
+  TEMPLATE_REF: main
+  TEMPLATE_REPO: boehringer-ingelheim/dv.templates
+
 jobs:
   pkgdown:
     name: ${{ vars.CI_IMAGE }}
@@ -20,6 +24,53 @@ jobs:
     steps:
       - name: Checkout project ⬇️
         uses: actions/checkout@v4
+
+      - name: Checkout templates repo ⬇️  
+        uses: actions/checkout@v4
+        with:
+          ref: ${{env.TEMPLATE_REF}}
+          repository: ${{env.TEMPLATE_REPO}}
+          sparse-checkout: |
+            scripts/
+            inst/validation
+          path: templates
+
+      - name: Overwrite quality control scripts with dv.templates ones 🧹
+        shell: bash
+        run: |
+          TEMPLATE_DIR="templates/inst/validation"
+          REPO_DIR="inst/validation"
+
+          if test ! -d "${REPO_DIR}"; then
+            echo "### Quality Control documentation is not present"
+            echo "### Include quality control documentation or skip it by creating following file 'inst/validation/skip_qc'"
+            exit 1
+          fi
+
+          if test -f "${REPO_DIR}/skip_qc"; then
+            echo "skip_qc file found skipping qc documentation"
+            exit 0
+          fi
+          
+          # Conserve specs.R file
+          cp "${REPO_DIR}/specs.R" "${TEMPLATE_DIR}/specs.R"
+
+          set +e  # Disable immediate exit in conflicting parts on error for diff command
+          DIFF_OUTPUT=$(diff -qr "${TEMPLATE_DIR}" "${REPO_DIR}")
+          set -e  # Enable immediate exit on error after diff command
+
+          echo "# Quality control files" | tee -a "${GITHUB_STEP_SUMMARY}"
+          
+          if [ -n "${DIFF_OUTPUT}" ]; then
+            echo "Warning: The contents of the directories are different!" | tee -a "${GITHUB_STEP_SUMMARY}"
+            echo "Modified files:" | tee -a "${GITHUB_STEP_SUMMARY}"
+            echo "$DIFF_OUTPUT" | tee -a "${GITHUB_STEP_SUMMARY}"
+          else
+            echo "The directories are identical." | tee -a "${GITHUB_STEP_SUMMARY}"
+          fi
+
+          rm -rf "${REPO_DIR}"
+          mv "${TEMPLATE_DIR}" "${REPO_DIR}"
 
       - name: Install package dependencies 📄
         uses: boehringer-ingelheim/dv.templates/.github/actions/dependencies@main
