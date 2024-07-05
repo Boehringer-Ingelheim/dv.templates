@@ -1,4 +1,4 @@
-# dv.templates <img src="man/figures/repo-logo.svg" align="right" height="138" alt="" />
+# dv.templates
 
 [![Build status](https://github.com/boehringer-ingelheim/dv.templates/actions/workflows/shared_ci.yml/badge.svg)](https://github.com/boehringer-ingelheim/dv.templates/actions/workflows/shared_ci.yml?query=workflow)
 
