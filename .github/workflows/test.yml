@@ -85,7 +85,7 @@ jobs:
           path: inst/validation/results
 
       - name: Archive snap results ⬆️
-        if: always()
+        if: success() || failure()
         uses: actions/upload-artifact@v4
         with:
           name: snap_results
