@@ -46,6 +46,17 @@ test_results <- tibble::as_tibble(
 
 success[["test"]] <- sum(test_results[["failed"]]) == 0
 
+# Copy _snaps folder so it can be archived later for test debugging
+# Empty if no errors are found
+root <- Sys.getenv("GITHUB_WORKSPACE")
+archive_folder <- file.path(root, "snaps_archive")
+if (!dir.exists(archive_folder)) dir.create(archive_folder)
+
+if (!success[["test"]]) {
+  snap_folder <- system.file("tests/testthat/_snaps", package = pkg_name, mustWork = TRUE)
+  file.copy(snap_folder, archive_folder, recursive = TRUE)
+}
+
 message("##########################")
 message("###### TESTING  (F) ######")
 message("##########################")
