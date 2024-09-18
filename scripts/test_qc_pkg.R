@@ -53,7 +53,7 @@ archive_folder <- file.path(root, "snaps_archive")
 if (!dir.exists(archive_folder)) dir.create(archive_folder)
 
 if (!success[["test"]]) {
-  snap_folder <- system.file("tests/testthat/_snaps")
+  snap_folder <- system.file("tests/testthat/_snaps", package = pkg_name, mustWork = TRUE)
   file.copy(snap_folder, archive_folder, recursive = TRUE)
 }
 
