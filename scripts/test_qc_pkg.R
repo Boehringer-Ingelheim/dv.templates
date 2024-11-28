@@ -44,7 +44,7 @@ test_results <- tibble::as_tibble(
   )
 )
 
-success[["test"]] <- sum(test_results[["failed"]]) == 0
+success[["test"]] <- (sum(test_results[["failed"]]) == 0) && !(any(test_results[["error"]]))
 
 # Copy _snaps folder so it can be archived later for test debugging
 # Empty if no errors are found
