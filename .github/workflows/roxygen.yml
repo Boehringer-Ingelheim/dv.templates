@@ -11,7 +11,7 @@ concurrency:
 jobs:
   roxygen:
     name: ${{ vars.CI_IMAGE }}
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     container:
       image: ${{ vars.CI_IMAGE }}    
     env:
