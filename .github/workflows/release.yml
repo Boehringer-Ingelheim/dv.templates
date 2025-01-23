@@ -19,7 +19,7 @@ jobs:
 
       - name: NEWS.md and DESCRIPTION version check
         run: |
-          DEBUG=1
+          DEBUG=0
           
           TARGET_BRANCH=${GITHUB_BASE_REF} # specific to pull requests
           if [ -z "${TARGET_BRANCH}" ]; then 

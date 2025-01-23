@@ -37,4 +37,4 @@ jobs:
 
   release:
     name: Release 📈
-    uses: boehringer-ingelheim/dv.templates/.github/workflows/release.yml@allow_fourth_version_component
+    uses: boehringer-ingelheim/dv.templates/.github/workflows/release.yml@main
