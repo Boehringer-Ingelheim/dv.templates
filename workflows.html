@@ -54,12 +54,8 @@
 <p>Runs tests on the installed package, generates the qc documentation and uploads it as an artifact for later consumption.</p>
 </div>
 <div class="section level3">
-<h3 id="gitleaksyml"><a href="https://github.com/boehringer-ingelheim/dv.templates/blob/main/.github/workflows/gitleaks.yml" class="external-link"><code>gitleaks.yml</code></a><a class="anchor" aria-label="anchor" href="#gitleaksyml"></a></h3>
-<p>Runs <a href="https://github.com/zricethezav/gitleaks" class="external-link"><code>gitleaks</code></a> on the repo to discover any secrets that might have been hardcoded.</p>
-</div>
-<div class="section level3">
 <h3 id="lintryml"><a href="https://github.com/boehringer-ingelheim/dv.templates/blob/main/.github/workflows/lintr.yml" class="external-link"><code>lintr.yml</code></a><a class="anchor" aria-label="anchor" href="#lintryml"></a></h3>
-<p>Runs lintr on the repo with the linting settings specified in the container image.</p>
+<p>Runs lintr on the repo with the linting settings specified in the container image, except when overriden by a repository-specific <code>.lintr.R</code> configuration file.</p>
 </div>
 <div class="section level3">
 <h3 id="pkgdownyml"><a href="https://github.com/boehringer-ingelheim/dv.templates/blob/main/.github/workflows/pkgdown.yml" class="external-link"><code>pkgdown.yml</code></a><a class="anchor" aria-label="anchor" href="#pkgdownyml"></a></h3>
@@ -67,7 +63,7 @@
 </div>
 <div class="section level3">
 <h3 id="roxygenyml"><a href="https://github.com/boehringer-ingelheim/dv.templates/blob/main/.github/workflows/roxygen.yml" class="external-link"><code>roxygen.yml</code></a><a class="anchor" aria-label="anchor" href="#roxygenyml"></a></h3>
-<p>Uses <a href="https://roxygen2.r-lib.org/" class="external-link"><code>roxygen</code></a> to generate <code>.Rd</code> files in the <code>man/</code> directory. It also checks if manuals are up-to-date with roxygen comments in the code.</p>
+<p>Uses <a href="https://roxygen2.r-lib.org/" class="external-link"><code>roxygen</code></a> to generate <code>.Rd</code> files in the <code>man/</code> directory. It also checks if manuals are up-to-date with roxygen comments in the code. (Currently broken).</p>
 </div>
 <div class="section level3">
 <h3 id="releaseyml"><a href="https://github.com/boehringer-ingelheim/dv.templates/blob/main/.github/workflows/release.yml" class="external-link"><code>release.yml</code></a><a class="anchor" aria-label="anchor" href="#releaseyml"></a></h3>
@@ -105,17 +101,13 @@
 <span id="cb1-26"><a href="#cb1-26" aria-hidden="true"></a><span class="at">    </span><span class="fu">with</span><span class="kw">:</span></span>
 <span id="cb1-27"><a href="#cb1-27" aria-hidden="true"></a><span class="at">      </span><span class="fu">lintr_error_on_lint</span><span class="kw">:</span><span class="at"> </span><span class="ch">true</span></span>
 <span id="cb1-28"><a href="#cb1-28" aria-hidden="true"></a></span>
-<span id="cb1-29"><a href="#cb1-29" aria-hidden="true"></a><span class="at">  </span><span class="fu">gitleaks</span><span class="kw">:</span></span>
-<span id="cb1-30"><a href="#cb1-30" aria-hidden="true"></a><span class="at">    </span><span class="fu">name</span><span class="kw">:</span><span class="at"> Gitleaks 🌧️</span></span>
-<span id="cb1-31"><a href="#cb1-31" aria-hidden="true"></a><span class="at">    </span><span class="fu">uses</span><span class="kw">:</span><span class="at"> boehringer-ingelheim/dv.templates/.github/workflows/gitleaks.yml@main</span></span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true"></a><span class="at">  </span><span class="fu">roxygen</span><span class="kw">:</span></span>
+<span id="cb1-30"><a href="#cb1-30" aria-hidden="true"></a><span class="at">    </span><span class="fu">name</span><span class="kw">:</span><span class="at"> Roxygen 📄</span></span>
+<span id="cb1-31"><a href="#cb1-31" aria-hidden="true"></a><span class="at">    </span><span class="fu">uses</span><span class="kw">:</span><span class="at"> boehringer-ingelheim/dv.templates/.github/workflows/roxygen.yml@main</span></span>
 <span id="cb1-32"><a href="#cb1-32" aria-hidden="true"></a></span>
-<span id="cb1-33"><a href="#cb1-33" aria-hidden="true"></a><span class="at">  </span><span class="fu">roxygen</span><span class="kw">:</span></span>
-<span id="cb1-34"><a href="#cb1-34" aria-hidden="true"></a><span class="at">    </span><span class="fu">name</span><span class="kw">:</span><span class="at"> Roxygen 📄</span></span>
-<span id="cb1-35"><a href="#cb1-35" aria-hidden="true"></a><span class="at">    </span><span class="fu">uses</span><span class="kw">:</span><span class="at"> boehringer-ingelheim/dv.templates/.github/workflows/roxygen.yml@main</span></span>
-<span id="cb1-36"><a href="#cb1-36" aria-hidden="true"></a></span>
-<span id="cb1-37"><a href="#cb1-37" aria-hidden="true"></a><span class="at">  </span><span class="fu">pkgdown</span><span class="kw">:</span></span>
-<span id="cb1-38"><a href="#cb1-38" aria-hidden="true"></a><span class="at">    </span><span class="fu">name</span><span class="kw">:</span><span class="at"> Pkgdown 📖</span></span>
-<span id="cb1-39"><a href="#cb1-39" aria-hidden="true"></a><span class="at">    </span><span class="fu">uses</span><span class="kw">:</span><span class="at"> boehringer-ingelheim/dv.templates/.github/workflows/pkgdown.yml@main</span></span></code></pre></div>
+<span id="cb1-33"><a href="#cb1-33" aria-hidden="true"></a><span class="at">  </span><span class="fu">pkgdown</span><span class="kw">:</span></span>
+<span id="cb1-34"><a href="#cb1-34" aria-hidden="true"></a><span class="at">    </span><span class="fu">name</span><span class="kw">:</span><span class="at"> Pkgdown 📖</span></span>
+<span id="cb1-35"><a href="#cb1-35" aria-hidden="true"></a><span class="at">    </span><span class="fu">uses</span><span class="kw">:</span><span class="at"> boehringer-ingelheim/dv.templates/.github/workflows/pkgdown.yml@main</span></span></code></pre></div>
 </div>
 </div>
 
