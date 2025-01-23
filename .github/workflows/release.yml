@@ -34,6 +34,7 @@ jobs:
             echo "DESCRIPTION VERSION: $DESC_VERSION"
             echo "NEWS.md VERSION: $NEWS_VERSION"
             echo "Version component count: $VERSION_COMPONENT_COUNT"
+            echo "Target branch: $TARGET_BRANCH"
           fi
 
           RESULT=0
