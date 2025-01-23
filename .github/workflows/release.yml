@@ -1,5 +1,5 @@
 ---
-name: Release 📈
+name: Release
 
 on:
   workflow_call:
@@ -14,29 +14,42 @@ jobs:
     runs-on: ubuntu-22.04
 
     steps:
-      - name: Checkout project ⬇️
+      - name: Checkout project
         uses: actions/checkout@v4
 
-      - name: NEWS.md and DESCRIPTION Version check 🏁
+      - name: NEWS.md and DESCRIPTION version check
         run: |
-          DESC_VERSION=$(awk -F: '/Version:/{gsub(/[ ]+/,"") ; print $2}' DESCRIPTION | tr -d '\n' | xargs)
-          NEWS_VERSION=$(awk '/^#+ /{print $3,$4; exit}' NEWS.md | tr -d '\n' | xargs)
-          DESC_DEV_VERSION=$(echo $DESC_VERSION | awk -F '.' '{print $NF}')
-          echo "NEWS.md version: $NEWS_VERSION"
-          echo "DESCRIPTION version: $DESC_VERSION"
-
-          if [ $DESC_DEV_VERSION -ge 9000 ]; then
-            echo "❌ DESCRIPTION file version is in development mode."
-            echo "Please fix this."
-            exit 1
+          DEBUG=0
+          
+          TARGET_BRANCH=${GITHUB_BASE_REF} # specific to pull requests
+          if [ -z "${TARGET_BRANCH}" ]; then 
+            TARGET_BRANCH=${GITHUB_REF_NAME} # generic for all workflows
           fi
 
+          DESC_VERSION=$(awk -F: '/^Version:/{gsub(/[ ]+/,"") ; print $2; exit}' DESCRIPTION)
+          NEWS_VERSION=$(awk '/^#/{print $3; exit}' NEWS.md)
+          VERSION_COMPONENT_COUNT=$(echo $DESC_VERSION | awk -F . '{ print NF }')
+
+          if [ $DEBUG -eq 1 ]; then
+            echo "DESCRIPTION VERSION: $DESC_VERSION"
+            echo "NEWS.md VERSION: $NEWS_VERSION"
+            echo "Version component count: $VERSION_COMPONENT_COUNT"
+            echo "Target branch: $TARGET_BRANCH"
+          fi
+
+          RESULT=0
           if [ "$DESC_VERSION" = "$NEWS_VERSION" ]; then 
-            echo "✅ NEWS.md and DESCRIPTION have the same version"
-            exit 0
+            echo "✅ Versions on NEWS.md and DESCRIPTION match ($DESC_VERSION)."
           else
-            echo "❌ NEWS.md and DESCRIPTION have different versions"
-            echo "Please fix this."
-            exit 1
+            echo "❌ Versions on NEWS.md and DESCRIPTION do not match ($NEWS_VERSION vs $DESC_VERSION)."
+            RESULT=1
           fi
+
+          # we check the target branch inside the script (as opposed to in GH actions) to facilitate future merging of actions
+          if [ "$TARGET_BRANCH" = "main" ] && [ $VERSION_COMPONENT_COUNT -ge 4 ]; then
+            echo "❌ Version on DESCRIPTION has more than three components (X.X.X) and is targetting the 'main' branch."
+            RESULT=1
+          fi
+
+          exit $RESULT
         shell: bash
