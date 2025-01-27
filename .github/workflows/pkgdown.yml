@@ -1,5 +1,5 @@
 ---
-name: Pkgdown 📖
+name: Pkgdown
 
 on:
   workflow_call:
@@ -35,7 +35,7 @@ jobs:
             inst/validation
           path: templates
 
-      - name: Overwrite quality control scripts with dv.templates ones 🧹
+      - name: Overwrite quality control scripts with those on dv.templates
         shell: bash
         run: |
           TEMPLATE_DIR="templates/inst/validation"
@@ -72,7 +72,7 @@ jobs:
           rm -rf "${REPO_DIR}"
           mv "${TEMPLATE_DIR}" "${REPO_DIR}"
 
-      - name: Install package dependencies 📄
+      - name: Install package dependencies
         uses: boehringer-ingelheim/dv.templates/.github/actions/dependencies@main
 
       - name: Get validation results
@@ -82,7 +82,20 @@ jobs:
           path: inst/validation/results
 
       - name: Build site 🔧
-        run: pkgdown::build_site(new_process = FALSE) # otherwise errors are not logged
+        run: |
+          # Pay the hadley tax: https://github.com/r-lib/roxygen2/issues/905
+          desc <- read.dcf("DESCRIPTION")
+          desc <- desc[, setdiff(colnames(desc), "RoxygenNote"), drop=FALSE]
+          write.dcf(x = desc, file = "DESCRIPTION")
+          # Generate docs
+          rox_messages <- capture.output(roxygen2::roxygenize(clean = TRUE), type = "message")
+          message(paste(rox_messages, collapse = '\n'))
+          error_mask <- startsWith(rox_messages, '✖')
+          if(any(error_mask)) {
+            stop(paste("Errors while rendering roxygen documentation:", paste(rox_messages[error_mask], collapse = "\n")))
+          }
+          # Render site
+          pkgdown::build_site(new_process = FALSE) # otherwise errors are not logged
         shell: Rscript {0}
 
       - name: Check URLs 🌐
