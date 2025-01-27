@@ -4,7 +4,7 @@
 #'
 #' @param name Your name (character string; e.g. "john doe").
 #'
-#' @return A character string, capitalized to title case.
+#' @returna A character string, capitalized to title case.
 #' @export
 #'
 #' @examples
@@ -13,7 +13,7 @@ hello <- function(name = "your name") {
   words <- strsplit(name, " ")[[1]]
   words <- sapply(words, function(word) paste0(toupper(substr(word, 1, 1)), substr(word, 2, nchar(word))))
   name <- paste(words, collapse = " ")
-  paste0("Hello, ", name, '.')
+  paste0("Hello, ", name, ".")
 }
 
 #' Personal greeting as a Shiny app
