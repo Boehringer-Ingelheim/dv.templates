@@ -47,7 +47,7 @@ jobs:
 
           # we check the target branch inside the script (as opposed to in GH actions) to facilitate future merging of actions
           if [ "$TARGET_BRANCH" = "main" ] && [ $VERSION_COMPONENT_COUNT -ge 4 ]; then
-            echo "❌ Version on DESCRIPTION has more than three components (X.X.X) and is targetting the 'main' branch."
+            echo "❌ Version on DESCRIPTION has more than three components (X.X.X) and is targeting the 'main' branch."
             RESULT=1
           fi
 
