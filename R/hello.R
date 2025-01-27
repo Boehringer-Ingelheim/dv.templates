@@ -10,8 +10,10 @@
 #' @examples
 #' hello("james bond")
 hello <- function(name = "your name") {
-  name <- stringr::str_to_title(name)
-  print(paste("Hello,", name))
+  words <- strsplit(name, " ")[[1]]
+  words <- sapply(words, function(word) paste0(toupper(substr(word, 1, 1)), substr(word, 2, nchar(word))))
+  name <- paste(words, collapse = " ")
+  paste0("Hello, ", name, '.')
 }
 
 #' Personal greeting as a Shiny app
