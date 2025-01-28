@@ -1,4 +1,4 @@
-# What these workflows do?
+# What do these workflows do?
 
 ### [`check.yml`](https://github.com/boehringer-ingelheim/dv.templates/blob/main/.github/workflows/check.yml)
 
@@ -14,16 +14,13 @@ Runs lintr on the repo with the linting settings specified in the container imag
 
 ### [`pkgdown.yml`](https://github.com/boehringer-ingelheim/dv.templates/blob/main/.github/workflows/pkgdown.yml)
 
-Generates a [`pkgdown`](https://pkgdown.r-lib.org/) website and uploads it to Github Pages.
-
-### [`roxygen.yml`](https://github.com/boehringer-ingelheim/dv.templates/blob/main/.github/workflows/roxygen.yml)
-
-Uses [`roxygen`](https://roxygen2.r-lib.org/) to generate `.Rd` files in the
-`man/` directory. It also checks if manuals are up-to-date with roxygen comments in the code. (Currently broken).
+Generates `man/*.Rd` documentation through [`roxygen`](https://roxygen2.r-lib.org/).
+Renders a [`pkgdown`](https://pkgdown.r-lib.org/) website and uploads it to Github Pages.
 
 ### [`release.yml`](https://github.com/boehringer-ingelheim/dv.templates/blob/main/.github/workflows/release.yml)
 
-Uses adds additional checks before merging the PR to main.
+Checks that version numbers in `NEWS.md` and `DESCRIPTION` match. 
+Checks that version numbers don't have a fourth component (major.minor.patch.**dev**) on PRs targeting `main`.
 
 ### [`shared_ci.yml`](https://github.com/boehringer-ingelheim/dv.templates/blob/main/.github/workflows/shared_ci.yml)
 
@@ -59,10 +56,6 @@ jobs:
     uses: boehringer-ingelheim/dv.templates/.github/workflows/lintr.yml@main
     with:
       lintr_error_on_lint: true
-
-  roxygen:
-    name: Roxygen 📄
-    uses: boehringer-ingelheim/dv.templates/.github/workflows/roxygen.yml@main
 
   pkgdown:
     name: Pkgdown 📖

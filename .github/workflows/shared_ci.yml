@@ -26,10 +26,6 @@ jobs:
     with:
       lintr_error_on_lint: true
 
-  roxygen:
-    name: Roxygen 📄
-    uses: boehringer-ingelheim/dv.templates/.github/workflows/roxygen.yml@main
-
   pkgdown:
     name: Pkgdown 📖
     uses: boehringer-ingelheim/dv.templates/.github/workflows/pkgdown.yml@main
