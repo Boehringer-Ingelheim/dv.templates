@@ -107,8 +107,10 @@ jobs:
               # it's better to restore the original name of the file.
               # This block is written as a function to be able to lean on `on.exit`, btw.
               on.exit(file.rename(from = 'vignettes/_qc.Rmd', to = 'vignettes/qc.Rmd'))
+              pkgdown::build_site(new_process = FALSE, install = FALSE) # `new_process` because otherwise errors go unlogged
+            } else {
+              pkgdown::build_site(new_process = FALSE) # `new_process` because otherwise errors go unlogged
             }
-            pkgdown::build_site(new_process = FALSE, install = FALSE) # `new_process` because otherwise errors go unlogged
           }
           render_site()
         shell: Rscript {0}
