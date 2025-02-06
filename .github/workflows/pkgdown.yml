@@ -100,6 +100,7 @@ jobs:
           render_site <- function(){
             if(file.exists('vignettes/qc.Rmd')){
               pkgdown::init_site()
+              devtools::install() # mimic the local installation that pkgdown::build_site does but pkgdown::build_article does not
               pkgdown::build_article(name = 'qc')
               file.rename(from = 'vignettes/qc.Rmd', to = 'vignettes/_qc.Rmd')
               # This last step is not necessary now but, if we ever want to combine actions,
@@ -107,7 +108,7 @@ jobs:
               # This block is written as a function to be able to lean on `on.exit`, btw.
               on.exit(file.rename(from = 'vignettes/_qc.Rmd', to = 'vignettes/qc.Rmd'))
             }
-            pkgdown::build_site(new_process = FALSE) # `new_process` because otherwise errors go unlogged
+            pkgdown::build_site(new_process = FALSE, install = FALSE) # `new_process` because otherwise errors go unlogged
           }
           render_site()
         shell: Rscript {0}
