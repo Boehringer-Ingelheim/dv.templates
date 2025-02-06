@@ -81,12 +81,13 @@ jobs:
           name: val_results
           path: inst/validation/results
 
-      - name: Build site 🔧
+      - name: Build site
         run: |
           # Pay the hadley tax: https://github.com/r-lib/roxygen2/issues/905
           desc <- read.dcf("DESCRIPTION")
           desc <- desc[, setdiff(colnames(desc), "RoxygenNote"), drop=FALSE]
           write.dcf(x = desc, file = "DESCRIPTION")
+
           # Generate docs
           rox_messages <- capture.output(roxygen2::roxygenize(clean = TRUE), type = "message")
           message(paste(rox_messages, collapse = '\n'))
@@ -94,8 +95,21 @@ jobs:
           if(any(error_mask)) {
             stop(paste("Errors while rendering roxygen documentation:", paste(rox_messages[error_mask], collapse = "\n")))
           }
+
           # Render site
-          pkgdown::build_site(new_process = FALSE) # otherwise errors are not logged
+          render_site <- function(){
+            if(file.exists('vignettes/qc.Rmd')){
+              pkgdown::init_site()
+              pkgdown::build_article(name = 'qc')
+              file.rename(from = 'vignettes/qc.Rmd', to = 'vignettes/_qc.Rmd')
+              # This last step is not necessary now but, if we ever want to combine actions,
+              # it's better to restore the original name of the file.
+              # This block is written as a function to be able to lean on `on.exit`, btw.
+              on.exit(file.rename(from = 'vignettes/_qc.Rmd', to = 'vignettes/qc.Rmd'))
+            }
+            pkgdown::build_site(new_process = FALSE) # `new_process` because otherwise errors go unlogged
+          }
+          render_site()
         shell: Rscript {0}
 
       - name: Check URLs 🌐
