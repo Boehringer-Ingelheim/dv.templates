@@ -98,7 +98,7 @@ jobs:
           pkgdown::build_site(new_process = FALSE) # otherwise errors are not logged
         shell: Rscript {0}
 
-      - name: Remove Quality Control vignete from Articles dropdown
+      - name: Remove Quality Control vignette from Articles dropdown
         run: |
           # This removal is highly dependent on the pkgdown template, but we've tried to make the regexp patterns
           # fairly restrictive to prevent deletions from happening if the template changes. If that were to happen, 
