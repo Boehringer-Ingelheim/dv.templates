@@ -81,7 +81,7 @@ jobs:
           name: val_results
           path: inst/validation/results
 
-      - name: Build site 🔧
+      - name: Build site
         run: |
           # Pay the hadley tax: https://github.com/r-lib/roxygen2/issues/905
           desc <- read.dcf("DESCRIPTION")
@@ -97,6 +97,27 @@ jobs:
           # Render site
           pkgdown::build_site(new_process = FALSE) # otherwise errors are not logged
         shell: Rscript {0}
+
+      - name: Remove Quality Control vignette from Articles dropdown
+        run: |
+          # This removal is highly dependent on the pkgdown template, but we've tried to make the regexp patterns
+          # fairly restrictive to prevent deletions from happening if the template changes. If that were to happen, 
+          # the QC vignette would reappear under Articles, which is annoying, but not the end of the world.
+
+          # For reference, see https://regex101.com/ and https://stackoverflow.com/a/56927135
+          PATTERN_QC_ITEM='^\s*<a class="dropdown-item" href=".*/qc.html">.*</a>\s*$'
+          PATTERN_DROPDOWN_WITH_ITEMS='(?s)<li class=\"(active )?nav-item dropdown\">.*?(?:<\/li>(*SKIP)(*FAIL)|.)dropdown-articles.*?dropdown-item.*?<\/li>'
+          PATTERN_DROPDOWN_WITHOUT_ITEMS='(?s)<li class=\"(active )?nav-item dropdown\">.*?(?:<\/li>(*SKIP)(*FAIL)|.)dropdown-articles.*?<\/li>'
+
+          readarray -t FILES < <(find docs -name "*.html" -print0 | xargs -0 grep -l "$PATTERN_QC_ITEM")
+          for f in "${FILES[@]}"; do
+            sed -i "\#$PATTERN_QC_ITEM#d" "$f"
+            grep -Pzoq "$PATTERN_DROPDOWN_WITH_ITEMS" "$f"
+            if [ $? -ne 0 ]; then
+              perl -0 -i -p -e "s/$PATTERN_DROPDOWN_WITHOUT_ITEMS//gs" "$f"
+            fi
+          done
+        shell: bash
 
       - name: Check URLs 🌐
         run: |
