@@ -6,7 +6,7 @@ runs:
   steps: 
     - name: Install package dependencies 📄
       run: |
-        # Otherwise it install system libraries automatically
+        # Otherwise it installs system libraries automatically
         old_sysreqs_option <- getOption("pkg.sysreqs")
         options(pkg.sysreqs = FALSE)
         on.exit(options("pkg.sysreqs" = old_sysreqs_option), add = TRUE)        
