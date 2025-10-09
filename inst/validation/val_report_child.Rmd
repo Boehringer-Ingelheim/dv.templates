@@ -62,7 +62,13 @@ render_spec_table <- function(t) {
   t <- t[trac_matrix_col]
   colnames(t) <- names(trac_matrix_col)
   t <- t[order(t[["Spec ID"]]), ]
-  DT::datatable(t, options = list(dom = "ltp"), filter = list(position = "top"))
+  DT::datatable(t, options = list(dom = "ltp"), filter = list(position = "top")) |>
+  DT::formatStyle(
+    columns = c("Spec ID", "Spec", "Test Desc", "File"),
+    whiteSpace = "normal",
+    wordBreak = "break-word",
+    overflowWrap = "break-word"
+  )
 }
 
 data_frame_by_row <- function(colnames, data) {
@@ -130,7 +136,7 @@ data_frame_by_row(
 ) |>
   DT::datatable(
     rownames = FALSE,
-    options = list(columnDefs = list(list(visible = FALSE, targets = c(3))), dom = "tp"),
+    options = list(columnDefs = list(list(visible = FALSE, targets = c(3))), dom = "tp", scrollx = TRUE),
     filter = list(position = "top")
   ) |>
   DT::formatStyle(
