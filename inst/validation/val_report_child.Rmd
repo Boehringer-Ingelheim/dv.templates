@@ -136,7 +136,7 @@ data_frame_by_row(
 ) |>
   DT::datatable(
     rownames = FALSE,
-    options = list(columnDefs = list(list(visible = FALSE, targets = c(3))), dom = "tp", scrollx = TRUE),
+    options = list(columnDefs = list(list(visible = FALSE, targets = c(3))), dom = "tp"),
     filter = list(position = "top")
   ) |>
   DT::formatStyle(
