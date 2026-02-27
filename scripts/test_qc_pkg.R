@@ -29,8 +29,7 @@ message("##########################")
 
 reporter <- testthat::MultiReporter$new(
   list(
-    testthat::ProgressReporter$new(),
-    testthat::SummaryReporter$new(file = file.path(getwd(), "tests", "test-out.xml"))
+    testthat::ProgressReporter$new()
   )
 )
 
