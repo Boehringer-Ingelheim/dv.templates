@@ -121,7 +121,7 @@ jobs:
 
       - name: Check URLs
         run: |
-          lychee . --format markdown --verbose --no-progress --exclude "https://boehringer-ingelheim\.github\.io.*" --exclude "https://github\.com/Boehringer-Ingelheim/.*/blob/.*" >> $GITHUB_STEP_SUMMARY
+          lychee . --format markdown --verbose --no-progress --exclude "https://boehringer-ingelheim\.github\.io.*" --exclude "https://github\.com/boehringer-ingelheim/.*/blob/.*" >> $GITHUB_STEP_SUMMARY
         shell: bash
 
       - name: Checkout gh-pages branch ⬇️
