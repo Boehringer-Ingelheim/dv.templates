@@ -1,6 +1,6 @@
 Package: dv.templates
 Title: Provides reusable functionality for R and CI/CD 
-Version: 0.2.0-9000
+Version: 0.2.1
 Authors@R: c(
     person("Boehringer-Ingelheim Pharma GmbH & Co.KG", role = c("cph", "fnd")),
     person("Sorin", "Voicu", email = "sorin.voicu.ext@boehringer-ingelheim.com", role = c("aut", "cre"))
@@ -17,4 +17,4 @@ Suggests:
     shinytest2
 VignetteBuilder:
     knitr
-RoxygenNote: 7.3.0
+RoxygenNote: 7.3.3
