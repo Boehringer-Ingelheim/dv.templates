@@ -2,6 +2,9 @@
 name: Lintr 🔍
 
 on:
+  pull_request: 
+    branches: 
+      - main
   workflow_call:
     inputs:
       lintr_error_on_lint:
