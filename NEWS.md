@@ -1,5 +1,9 @@
 # dv.templates 0.2.1
 
+- Fix GitHub lintr.yml workflow to fetch .lintr.R
+
+# dv.templates 0.2.1
+
 - Replace `.lintr` with `.lintr.R`
 
 # dv.templates 0.2.0
