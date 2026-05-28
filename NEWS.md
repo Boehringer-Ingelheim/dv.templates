@@ -1,3 +1,7 @@
+# dv.templates 0.2.1
+
+- Replace `.lintr` with `.lintr.R`
+
 # dv.templates 0.2.0
 
 - Freeze ubuntu `runs-on` image version
