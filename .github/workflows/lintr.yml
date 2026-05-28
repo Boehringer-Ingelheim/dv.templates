@@ -32,7 +32,7 @@ jobs:
 
       - name: Import .lintr
         run: |
-          wget -O .lintr https://raw.githubusercontent.com/boehringer-ingelheim/dv.templates/main/.lintr
+          wget -O .lintr.R https://raw.githubusercontent.com/boehringer-ingelheim/dv.templates/main/.lintr.R
 
       - name: Lintr 🔍
         run: lintr::lint_package()
