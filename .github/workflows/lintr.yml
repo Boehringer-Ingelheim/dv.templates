@@ -30,10 +30,6 @@ jobs:
       - name: Install package dependencies 📄
         uses: boehringer-ingelheim/dv.templates/.github/actions/dependencies@main     
 
-      - name: Import .lintr
-        run: |
-          wget -O .lintr.R https://raw.githubusercontent.com/boehringer-ingelheim/dv.templates/main/.lintr.R
-
       - name: Lintr 🔍
         run: lintr::lint_package()
         shell: Rscript {0}
