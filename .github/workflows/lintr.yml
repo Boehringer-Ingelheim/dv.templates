@@ -4,6 +4,10 @@ name: Lintr 🔍
 on:
   workflow_call:
     inputs:
+      ci_image:
+        description: Container image to run in. Resolved centrally by shared_ci.yml.
+        required: true
+        type: string
       lintr_error_on_lint:
         description: Raise lintr error when lints found.
         required: false
@@ -16,10 +20,10 @@ concurrency:
 
 jobs:
   lintr:
-    name: ${{ vars.CI_IMAGE }}
+    name: ${{ inputs.ci_image }}
     runs-on: ubuntu-22.04
     container:
-      image: ${{ vars.CI_IMAGE }}    
+      image: ${{ inputs.ci_image }}
     env:
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
 

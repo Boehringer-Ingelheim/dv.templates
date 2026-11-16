@@ -12,24 +12,39 @@ on:
   workflow_call:
 
 jobs:
+  ci-image:
+    name: CI image
+    uses: boehringer-ingelheim/dv.templates/.github/workflows/ci_image.yml@main
+
   check:
     name: Check 📦
     uses: boehringer-ingelheim/dv.templates/.github/workflows/check.yml@main
+    needs: ci-image
+    with:
+      ci_image: ${{ needs.ci-image.outputs.image }}
 
   test:
     name: Test and QC 🧪
     uses: boehringer-ingelheim/dv.templates/.github/workflows/test.yml@main
+    needs: ci-image
+    with:
+      ci_image: ${{ needs.ci-image.outputs.image }}
 
   lintr:
     name: Lintr 🔍
     uses: boehringer-ingelheim/dv.templates/.github/workflows/lintr.yml@main
+    needs: ci-image
     with:
+      ci_image: ${{ needs.ci-image.outputs.image }}
       lintr_error_on_lint: true
 
   pkgdown:
     name: Pkgdown 📖
     uses: boehringer-ingelheim/dv.templates/.github/workflows/pkgdown.yml@main
-    needs: test
+    # A job can only read the outputs of jobs listed in its own `needs`.
+    needs: [ci-image, test]
+    with:
+      ci_image: ${{ needs.ci-image.outputs.image }}
 
   release:
     name: Release 📈
