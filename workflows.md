@@ -62,9 +62,9 @@ jobs:
 
 All repositories run on one container image, defined once as `DEFAULT_CI_IMAGE` at the top of [`ci_image.yml`](https://github.com/boehringer-ingelheim/dv.templates/blob/main/.github/workflows/ci_image.yml).
 
-### Opting out: `CI_IMAGE_BYPASS`
+### Opting out: `CI_IMAGE`
 
-A repository that needs a different image sets the Actions variable `CI_IMAGE_BYPASS`.
+A repository that needs a different image sets the Actions variable `CI_IMAGE`, as before. Delete the variable to use the central default.
 A warning is issued when this option is used.
 If possible it will sent as a PR comment (Write permission is set).
 If not as a warning in the results. As this does not fail the actions the warning in the results may be hidden.

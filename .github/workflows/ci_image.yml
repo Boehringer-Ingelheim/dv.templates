@@ -5,17 +5,17 @@ on:
   workflow_call:
     outputs:
       image:
-        description: Container image for the CI jobs, the central default or the repository's `CI_IMAGE_BYPASS`.
+        description: Container image for the CI jobs, the central default or the repository's `CI_IMAGE`.
         value: ${{ jobs.ci-image.outputs.image }}
 
 env:
   # Central CI image for every repository that uses this workflow.
-  # A repository can opt out by setting the `CI_IMAGE_BYPASS`.
+  # A repository can opt out by setting the `CI_IMAGE` variable.
   DEFAULT_CI_IMAGE: ghcr.io/boehringer-ingelheim/r_4.6.0_cran_2026.05.31:latest
 
 jobs:
   ci-image:
-    name: ${{ vars.CI_IMAGE_BYPASS != '' && '⚠️ Bypassed' || 'Central default' }}
+    name: ${{ vars.CI_IMAGE != '' && '⚠️ Bypassed' || 'Central default' }}
     runs-on: ubuntu-22.04
     outputs:
       image: ${{ steps.resolve.outputs.image }}
@@ -25,23 +25,18 @@ jobs:
         id: resolve
         shell: bash
         env:
-          BYPASS: ${{ vars.CI_IMAGE_BYPASS }}
-          LEGACY: ${{ vars.CI_IMAGE }}
+          BYPASS: ${{ vars.CI_IMAGE }}
         run: |
           if [ -n "$BYPASS" ]; then
             IMAGE="$BYPASS"
-            SOURCE="\`CI_IMAGE_BYPASS\` repository variable"
-            echo "::warning title=CI image bypassed::CI_IMAGE_BYPASS is set: running on '$BYPASS' instead of the central default '$DEFAULT_CI_IMAGE' from dv.templates."
+            SOURCE="\`CI_IMAGE\` repository variable"
+            echo "::warning title=CI image bypassed::CI_IMAGE is set: running on '$BYPASS' instead of the central default '$DEFAULT_CI_IMAGE' from dv.templates."
             if [ "$BYPASS" = "$DEFAULT_CI_IMAGE" ]; then
-              echo "::warning title=Redundant bypass::CI_IMAGE_BYPASS is the same as the central default. Delete the variable."
+              echo "::warning title=Redundant bypass::CI_IMAGE is the same as the central default. Delete the variable."
             fi
           else
             IMAGE="$DEFAULT_CI_IMAGE"
             SOURCE="central default (dv.templates)"
-          fi
-
-          if [ -n "$LEGACY" ]; then
-            echo "::notice title=Unused variable::The CI_IMAGE variable is no longer used: CI runs on the central default from dv.templates unless CI_IMAGE_BYPASS is set. Delete CI_IMAGE."
           fi
 
           echo "image=$IMAGE" >> "$GITHUB_OUTPUT"
@@ -54,29 +49,18 @@ jobs:
             echo "| \`$IMAGE\` | $SOURCE |"
             if [ -n "$BYPASS" ]; then
               echo ""
-              echo "⚠️ **This repository bypasses the central CI image.** Delete the \`CI_IMAGE_BYPASS\` variable to go back to \`$DEFAULT_CI_IMAGE\`."
+              echo "⚠️ **This repository bypasses the central CI image.** Delete the \`CI_IMAGE\` variable to go back to \`$DEFAULT_CI_IMAGE\`."
             fi
           } >> "$GITHUB_STEP_SUMMARY"
 
       - name: Add CI image comment
-        if: github.event_name == 'pull_request' && vars.CI_IMAGE_BYPASS != ''
-        continue-on-error: true
-        shell: bash
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          PR: ${{ github.event.pull_request.number }}
-          BYPASS: ${{ vars.CI_IMAGE_BYPASS }}
-        run: |
-          gh pr comment "$PR" --repo "$GITHUB_REPOSITORY" --body "⚠️ **CI image bypassed.** This repository sets the \`CI_IMAGE_BYPASS\` instead of default \`$DEFAULT_CI_IMAGE\` from dv.templates" \
-            || echo "::notice title=No PR comment::Could not comment on the PR. \`CI_IMAGE_BYPASS\` instead of default"
-
-      - name: Add CI_IMAGE reminder comment
         if: github.event_name == 'pull_request' && vars.CI_IMAGE != ''
         continue-on-error: true
         shell: bash
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           PR: ${{ github.event.pull_request.number }}
+          BYPASS: ${{ vars.CI_IMAGE }}
         run: |
-          gh pr comment "$PR" --repo "$GITHUB_REPOSITORY" --body "**⚠️ Unused \`CI_IMAGE\` variable. Please remove it from the repo settings." \
-            || echo "::notice title=No PR comment::Could not comment on the PR. Unused \`CI_IMAGE\`."
+          gh pr comment "$PR" --repo "$GITHUB_REPOSITORY" --body "⚠️ **CI image bypassed.** This repository sets the \`CI_IMAGE\` variable, so CI runs on \`$BYPASS\` instead of the default \`$DEFAULT_CI_IMAGE\` from dv.templates. Delete the variable in the repository settings to use the default." \
+            || echo "::notice title=No PR comment::Could not comment on the PR. \`CI_IMAGE\` is used instead of the default."
