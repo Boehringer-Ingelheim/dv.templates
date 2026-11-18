@@ -22,11 +22,15 @@ Renders a [`pkgdown`](https://pkgdown.r-lib.org/) website and uploads it to Gith
 Checks that version numbers in `NEWS.md` and `DESCRIPTION` match. 
 Checks that version numbers don't have a fourth component (major.minor.patch.**dev**) on PRs targeting `main`.
 
+### [`ci_image.yml`](https://github.com/boehringer-ingelheim/dv.templates/blob/main/.github/workflows/ci_image.yml)
+
+Resolves the container image the other workflows run in (see [CI image](#ci-image)) and returns it as the `image` output.
+
 ### [`shared_ci.yml`](https://github.com/boehringer-ingelheim/dv.templates/blob/main/.github/workflows/shared_ci.yml)
 
-Builds a reusable workflow to be called from other repositories.
+Builds a reusable workflow to be called from other repositories. It is the entry point: it gets the CI image from `ci_image.yml` and passes it to the workflows above.
 
-Example configuration for `main` branch:
+Example configuration:
 
 ```yaml
 ---
@@ -39,25 +43,28 @@ on:
       - synchronize
       - reopened
       - ready_for_review
-    branches:
-      - main
   push:
     branches:
       - main
+      - dev
+      - test
   workflow_dispatch:
 
 jobs:
-  check-test:
-    name: Check 📦
-    uses: boehringer-ingelheim/dv.templates/.github/workflows/check.yml@main
-
-  lintr:
-    name: Lintr 🔍
-    uses: boehringer-ingelheim/dv.templates/.github/workflows/lintr.yml@main
-    with:
-      lintr_error_on_lint: true
-
-  pkgdown:
-    name: Pkgdown 📖
-    uses: boehringer-ingelheim/dv.templates/.github/workflows/pkgdown.yml@main
+  run-shared-ci:
+    name: Shared
+    uses: boehringer-ingelheim/dv.templates/.github/workflows/shared_ci.yml@main
 ```
+
+`check.yml`, `test.yml`, `lintr.yml` and `pkgdown.yml` require the container image as the `ci_image` input, so call them through `shared_ci.yml` rather than directly.
+
+# CI image
+
+All repositories run on one container image, defined once as `DEFAULT_CI_IMAGE` at the top of [`ci_image.yml`](https://github.com/boehringer-ingelheim/dv.templates/blob/main/.github/workflows/ci_image.yml).
+
+### Opting out: `CI_IMAGE`
+
+A repository that needs a different image sets the Actions variable `CI_IMAGE`, as before. Delete the variable to use the central default.
+A warning is issued when this option is used.
+If possible it will sent as a PR comment (Write permission is set).
+If not as a warning in the results. As this does not fail the actions the warning in the results may be hidden.

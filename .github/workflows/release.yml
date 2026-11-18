@@ -10,7 +10,7 @@ concurrency:
 
 jobs:
   create-release:
-    name: ${{ vars.CI_IMAGE }}
+    name: Version check
     runs-on: ubuntu-22.04
 
     steps:

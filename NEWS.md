@@ -1,3 +1,8 @@
+# dv.templates 0.3.0
+
+- CI runs on a central image (`DEFAULT_CI_IMAGE` in `ci_image.yml`)
+  - opt out with `CI_IMAGE`
+
 # dv.templates 0.2.1
 
 - Replace `.lintr` with `.lintr.R`

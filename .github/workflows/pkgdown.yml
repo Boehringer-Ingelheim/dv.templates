@@ -3,6 +3,11 @@ name: Pkgdown
 
 on:
   workflow_call:
+    inputs:
+      ci_image:
+        description: Container image to run in. Resolved centrally by shared_ci.yml.
+        required: true
+        type: string
 
 concurrency:
   group: pkgdown-${{ github.event.pull_request.number || github.ref }}
@@ -14,10 +19,10 @@ env:
 
 jobs:
   pkgdown:
-    name: ${{ vars.CI_IMAGE }}
+    name: ${{ inputs.ci_image }}
     runs-on: ubuntu-22.04
     container:
-      image: ${{ vars.CI_IMAGE }}    
+      image: ${{ inputs.ci_image }}
     env:
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
 
