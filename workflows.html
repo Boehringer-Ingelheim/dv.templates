@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="index.html">dv.templates</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -29,6 +29,7 @@
       <h1>What do these workflows do?</h1>
 
     </div>
+
 
 <div id="what-do-these-workflows-do" class="section level1">
 
@@ -53,9 +54,13 @@
 <p>Checks that version numbers in <code>NEWS.md</code> and <code>DESCRIPTION</code> match. Checks that version numbers don’t have a fourth component (major.minor.patch.<strong>dev</strong>) on PRs targeting <code>main</code>.</p>
 </div>
 <div class="section level3">
+<h3 id="ci_imageyml"><a href="https://github.com/boehringer-ingelheim/dv.templates/blob/main/.github/workflows/ci_image.yml" class="external-link"><code>ci_image.yml</code></a><a class="anchor" aria-label="anchor" href="#ci_imageyml"></a></h3>
+<p>Resolves the container image the other workflows run in (see <a href="#ci-image">CI image</a>) and returns it as the <code>image</code> output.</p>
+</div>
+<div class="section level3">
 <h3 id="shared_ciyml"><a href="https://github.com/boehringer-ingelheim/dv.templates/blob/main/.github/workflows/shared_ci.yml" class="external-link"><code>shared_ci.yml</code></a><a class="anchor" aria-label="anchor" href="#shared_ciyml"></a></h3>
-<p>Builds a reusable workflow to be called from other repositories.</p>
-<p>Example configuration for <code>main</code> branch:</p>
+<p>Builds a reusable workflow to be called from other repositories. It is the entry point: it gets the CI image from <code>ci_image.yml</code> and passes it to the workflows above.</p>
+<p>Example configuration:</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode yaml"><code class="sourceCode yaml"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="pp">---</span></span>
 <span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a><span class="fu">name</span><span class="kw">:</span><span class="at"> Checks 🧩</span></span>
 <span id="cb1-3"><a href="#cb1-3" tabindex="-1"></a></span>
@@ -66,29 +71,30 @@
 <span id="cb1-8"><a href="#cb1-8" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> synchronize</span></span>
 <span id="cb1-9"><a href="#cb1-9" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> reopened</span></span>
 <span id="cb1-10"><a href="#cb1-10" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> ready_for_review</span></span>
-<span id="cb1-11"><a href="#cb1-11" tabindex="-1"></a><span class="at">    </span><span class="fu">branches</span><span class="kw">:</span></span>
-<span id="cb1-12"><a href="#cb1-12" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> main</span></span>
-<span id="cb1-13"><a href="#cb1-13" tabindex="-1"></a><span class="at">  </span><span class="fu">push</span><span class="kw">:</span></span>
-<span id="cb1-14"><a href="#cb1-14" tabindex="-1"></a><span class="at">    </span><span class="fu">branches</span><span class="kw">:</span></span>
-<span id="cb1-15"><a href="#cb1-15" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> main</span></span>
+<span id="cb1-11"><a href="#cb1-11" tabindex="-1"></a><span class="at">  </span><span class="fu">push</span><span class="kw">:</span></span>
+<span id="cb1-12"><a href="#cb1-12" tabindex="-1"></a><span class="at">    </span><span class="fu">branches</span><span class="kw">:</span></span>
+<span id="cb1-13"><a href="#cb1-13" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> main</span></span>
+<span id="cb1-14"><a href="#cb1-14" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> dev</span></span>
+<span id="cb1-15"><a href="#cb1-15" tabindex="-1"></a><span class="at">      </span><span class="kw">-</span><span class="at"> test</span></span>
 <span id="cb1-16"><a href="#cb1-16" tabindex="-1"></a><span class="at">  </span><span class="fu">workflow_dispatch</span><span class="kw">:</span></span>
 <span id="cb1-17"><a href="#cb1-17" tabindex="-1"></a></span>
 <span id="cb1-18"><a href="#cb1-18" tabindex="-1"></a><span class="fu">jobs</span><span class="kw">:</span></span>
-<span id="cb1-19"><a href="#cb1-19" tabindex="-1"></a><span class="at">  </span><span class="fu">check-test</span><span class="kw">:</span></span>
-<span id="cb1-20"><a href="#cb1-20" tabindex="-1"></a><span class="at">    </span><span class="fu">name</span><span class="kw">:</span><span class="at"> Check 📦</span></span>
-<span id="cb1-21"><a href="#cb1-21" tabindex="-1"></a><span class="at">    </span><span class="fu">uses</span><span class="kw">:</span><span class="at"> boehringer-ingelheim/dv.templates/.github/workflows/check.yml@main</span></span>
-<span id="cb1-22"><a href="#cb1-22" tabindex="-1"></a></span>
-<span id="cb1-23"><a href="#cb1-23" tabindex="-1"></a><span class="at">  </span><span class="fu">lintr</span><span class="kw">:</span></span>
-<span id="cb1-24"><a href="#cb1-24" tabindex="-1"></a><span class="at">    </span><span class="fu">name</span><span class="kw">:</span><span class="at"> Lintr 🔍</span></span>
-<span id="cb1-25"><a href="#cb1-25" tabindex="-1"></a><span class="at">    </span><span class="fu">uses</span><span class="kw">:</span><span class="at"> boehringer-ingelheim/dv.templates/.github/workflows/lintr.yml@main</span></span>
-<span id="cb1-26"><a href="#cb1-26" tabindex="-1"></a><span class="at">    </span><span class="fu">with</span><span class="kw">:</span></span>
-<span id="cb1-27"><a href="#cb1-27" tabindex="-1"></a><span class="at">      </span><span class="fu">lintr_error_on_lint</span><span class="kw">:</span><span class="at"> </span><span class="ch">true</span></span>
-<span id="cb1-28"><a href="#cb1-28" tabindex="-1"></a></span>
-<span id="cb1-29"><a href="#cb1-29" tabindex="-1"></a><span class="at">  </span><span class="fu">pkgdown</span><span class="kw">:</span></span>
-<span id="cb1-30"><a href="#cb1-30" tabindex="-1"></a><span class="at">    </span><span class="fu">name</span><span class="kw">:</span><span class="at"> Pkgdown 📖</span></span>
-<span id="cb1-31"><a href="#cb1-31" tabindex="-1"></a><span class="at">    </span><span class="fu">uses</span><span class="kw">:</span><span class="at"> boehringer-ingelheim/dv.templates/.github/workflows/pkgdown.yml@main</span></span></code></pre></div>
+<span id="cb1-19"><a href="#cb1-19" tabindex="-1"></a><span class="at">  </span><span class="fu">run-shared-ci</span><span class="kw">:</span></span>
+<span id="cb1-20"><a href="#cb1-20" tabindex="-1"></a><span class="at">    </span><span class="fu">name</span><span class="kw">:</span><span class="at"> Shared</span></span>
+<span id="cb1-21"><a href="#cb1-21" tabindex="-1"></a><span class="at">    </span><span class="fu">uses</span><span class="kw">:</span><span class="at"> boehringer-ingelheim/dv.templates/.github/workflows/shared_ci.yml@main</span></span></code></pre></div>
+<p><code>check.yml</code>, <code>test.yml</code>, <code>lintr.yml</code> and <code>pkgdown.yml</code> require the container image as the <code>ci_image</code> input, so call them through <code>shared_ci.yml</code> rather than directly.</p>
 </div>
 </div>
+<div class="section level1">
+<h1 id="ci-image">CI image<a class="anchor" aria-label="anchor" href="#ci-image"></a></h1>
+<p>All repositories run on one container image, defined once as <code>DEFAULT_CI_IMAGE</code> at the top of <a href="https://github.com/boehringer-ingelheim/dv.templates/blob/main/.github/workflows/ci_image.yml" class="external-link"><code>ci_image.yml</code></a>.</p>
+<div class="section level3">
+<h3 id="opting-out-ci_image">Opting out: <code>CI_IMAGE</code>
+<a class="anchor" aria-label="anchor" href="#opting-out-ci_image"></a></h3>
+<p>A repository that needs a different image sets the Actions variable <code>CI_IMAGE</code>, as before. Delete the variable to use the central default. A warning is issued when this option is used. If possible it will sent as a PR comment (Write permission is set). If not as a warning in the results. As this does not fail the actions the warning in the results may be hidden.</p>
+</div>
+</div>
+
 
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside></div>
